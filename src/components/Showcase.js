@@ -59,13 +59,16 @@ const Showcase = () => {
 
       <Canvas 
         shadows 
-        camera={{ position: [4, 2, 5], fov: 50 }} 
+        camera={{ position: [-4, 1, 5], fov: 50 }} 
         className="w-full h-full"
       >
         <Environment preset="sunset" />
         <Stage environment={null} intensity={0.5}>
-          <Model color={selectedColor} />
+          <group position={[6, 0, 0]}>
+            <Model color={selectedColor} />
+          </group>
         </Stage>
+        
         <OrbitControls enableZoom={true} />
       </Canvas>
     </div>

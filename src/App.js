@@ -1,21 +1,27 @@
 import React, { Suspense } from 'react';
 import './index.css';
 import Hero from './components/Hero';
+import ModelPresentation from './components/ModelPresentation';
 const Showcase = React.lazy(() => import('./components/Showcase'));
 
 function App() {
   const scrollToConfigurator = () => {
     window.scrollTo({
-      top: window.innerHeight,
+      top: window.innerHeight * 2,
       behavior: 'smooth'
     });
   };
 
   return (
-    <div className="w-full h-[200vh]">
+    <div className="w-full h-[300vh]">
       {/* Section Hero */}
-      <section className="h-screen top-0">
+      <section className="h-screen">
         <Hero scrollToConfigurator={scrollToConfigurator} />
+      </section>
+
+      {/* Section Présentation */}
+      <section className="h-screen">
+        <ModelPresentation />
       </section>
 
       {/* Section Showcase */}
