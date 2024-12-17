@@ -15,10 +15,12 @@ body,
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
   position: fixed;
   inset: 0;
+  overflow-y: auto;
 }
