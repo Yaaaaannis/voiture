@@ -22,14 +22,14 @@ const Scene = ({ inView, targetCameraIndex }) => {
     if (!modelRef.current || !inView) return;
 
     const targetRotation = rotationAngles[targetCameraIndex];
-    timeRef.current += delta * 2;
+    timeRef.current += delta * 1.2;
     const t = Math.min(1, timeRef.current);
 
     // Animation de rotation du modèle
     modelRef.current.rotation.y = THREE.MathUtils.lerp(
       modelRef.current.rotation.y,
       targetRotation,
-      t
+      t * 0.8
     );
 
     if (t === 1) {
@@ -111,7 +111,11 @@ const ModelPresentation = () => {
                 key={spec.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
+                transition={{ 
+                  duration: 0.8,
+                  delay: index * 0.3,
+                  ease: "easeOut"
+                }}
                 onClick={() => setActiveCameraIndex(index)}
                 className={`
                   group relative px-8 py-6 text-left
