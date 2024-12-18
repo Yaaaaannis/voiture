@@ -23,7 +23,7 @@ const Hero = ({ scrollToConfigurator }) => {
 
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent">
-        <div className="h-full flex flex-col justify-center px-20">
+        <div className="h-full flex flex-col justify-center px-12">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}

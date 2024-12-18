@@ -2,6 +2,8 @@ import React, { Suspense } from 'react';
 import './index.css';
 import Hero from './components/Hero';
 import ModelPresentation from './components/ModelPresentation';
+import PerformanceSection from './components/PerformanceSection';
+
 const Showcase = React.lazy(() => import('./components/Showcase'));
 
 function App() {
@@ -13,7 +15,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-[300vh]">
+    <div className="w-full h-[400vh]">
       {/* Section Hero */}
       <section className="h-screen">
         <Hero scrollToConfigurator={scrollToConfigurator} />
@@ -22,6 +24,9 @@ function App() {
       {/* Section Présentation */}
       <section className="h-screen">
         <ModelPresentation />
+      </section>
+      <section className="h-screen">
+        <PerformanceSection />
       </section>
 
       {/* Section Showcase */}
