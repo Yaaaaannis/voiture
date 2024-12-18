@@ -61,19 +61,16 @@ const ModelPresentation = () => {
     { 
       label: "Performance", 
       value: "700 chevaux", 
-      icon: "⚡",
       description: "Une puissance brute qui repousse les limites"
     },
     { 
       label: "Accélération", 
       value: "2.9 secondes", 
-      icon: "🏃",
       description: "Du 0 à 100 km/h en un battement de cil"
     },
     { 
       label: "Vitesse", 
       value: "350 km/h", 
-      icon: "🏎️",
       description: "Une vitesse maximale à couper le souffle"
     }
   ];
@@ -115,23 +112,31 @@ const ModelPresentation = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className={`
-                  group relative overflow-hidden rounded-lg p-8
-                  bg-gradient-to-br from-white/10 to-white/5
-                  backdrop-blur-md border border-white/10
-                  hover:border-white/20 transition-all duration-300
-                  ${activeCameraIndex === index ? 'border-gold-500' : ''}
-                `}
                 onClick={() => setActiveCameraIndex(index)}
+                className={`
+                  group relative px-8 py-6 text-left
+                  border-b-2 ${activeCameraIndex === index ? 'border-white' : 'border-white/20'}
+                  hover:border-white transition-all duration-300
+                `}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-gold-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <div className="relative z-10">
-                  <div className="text-4xl mb-4">{spec.icon}</div>
-                  <div className="text-white font-medium text-xl mb-2">{spec.label}</div>
-                  <div className="text-gold-500 font-bold text-2xl mb-3">{spec.value}</div>
-                  <div className="text-gray-400 text-sm font-light">{spec.description}</div>
+                <div className="space-y-3">
+                  <h3 className="text-white/60 text-sm uppercase tracking-wider font-light">
+                    {spec.label}
+                  </h3>
+                  <p className="text-white text-3xl font-light">
+                    {spec.value}
+                  </p>
+                  <p className="text-white/40 text-sm font-light pr-12">
+                    {spec.description}
+                  </p>
                 </div>
+                <span className={`
+                  absolute right-4 top-1/2 transform -translate-y-1/2
+                  text-white/20 group-hover:text-white transition-all duration-300
+                  ${activeCameraIndex === index ? 'text-white' : ''}
+                `}>
+                  →
+                </span>
               </motion.button>
             ))}
           </div>
