@@ -13,7 +13,7 @@ import { useFrame } from '@react-three/fiber'
 
 
 
-export function Model({ color = '#ff0000', ...props }) {
+export function Model({ color = '#ff0000', rimColor = null, glassColor = null, ...props }) {
   const wheelLFRef = useRef()
   const wheelRFRef = useRef()
   const wheelLRRef = useRef()
@@ -26,7 +26,17 @@ export function Model({ color = '#ff0000', ...props }) {
       materials['CAR_chassis.5'] = materials['CAR_chassis.5'].clone()
       materials['CAR_chassis.5'].color.set(color)
     }
-  }, [materials, color])
+    if (materials['CAR_RIM.3'] && rimColor) {
+      materials['CAR_RIM.3'] = materials['CAR_RIM.3'].clone()
+      materials['CAR_RIM.3'].color.set(rimColor)
+    }
+    if (materials.INT_glass_side && glassColor) {
+      materials.INT_glass_side = materials.INT_glass_side.clone()
+      materials.INT_glass_side.color.set(glassColor)
+      materials.INT_glass_side.transparent = true
+      materials.INT_glass_side.opacity = 0.8
+    }
+  }, [materials, color, rimColor, glassColor])
 
   useFrame((state, delta) => {
     wheelLFRef.current.rotation.x += delta * 2

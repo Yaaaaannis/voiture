@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import ModelPresentation from './components/ModelPresentation';
 import PerformanceSection from './components/PerformanceSection';
 
+
 const Showcase = React.lazy(() => import('./components/Showcase'));
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
   };
 
   return (
-    <div className="w-full h-[400vh]">
+    <div className="w-full h-[300vh]">
       {/* Section Hero */}
       <section className="h-screen">
         <Hero scrollToConfigurator={scrollToConfigurator} />
