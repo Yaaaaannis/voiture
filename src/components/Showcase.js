@@ -1,7 +1,7 @@
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { Model } from '../3D/Car';
 import { OrbitControls, Environment, Stage } from '@react-three/drei';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 const colors = [
@@ -30,14 +30,45 @@ const glassColors = [
   { name: 'Bronze', value: '#CD7F32' },
 ];
 
+const CameraController = ({ position, enabled }) => {
+  const { camera } = useThree();
+  const controlsRef = useRef();
+
+  useEffect(() => {
+    if (enabled && controlsRef.current) {
+      camera.position.set(...position);
+      controlsRef.current.target.set(0, 0, 0);
+      controlsRef.current.update();
+    }
+  }, [position, camera, enabled]);
+
+  return (
+    <OrbitControls 
+      ref={controlsRef}
+      enableZoom={false}
+      enablePan={false}
+      minPolarAngle={Math.PI / 4}
+      maxPolarAngle={Math.PI / 1.5}
+      dampingFactor={0.1}
+      rotateSpeed={0.5}
+    />
+  );
+};
+
 const Showcase = () => {
+  const [openMenu, setOpenMenu] = useState(null);
   const [selectedColor, setSelectedColor] = useState(colors[0].value);
   const [selectedRimColor, setSelectedRimColor] = useState(null);
   const [selectedGlassColor, setSelectedGlassColor] = useState(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showRimColorPicker, setShowRimColorPicker] = useState(false);
   const [showGlassColorPicker, setShowGlassColorPicker] = useState(false);
-  const [openMenu, setOpenMenu] = useState(null);
+
+  const cameraPositions = {
+    body: [-3, 1, 4],     // Vue générale
+    rims: [-2, 0, 2],   // Vue rapprochée des roues
+    glass: [2, 0.5, 0],    // Vue surélevée pour les vitres
+  };
 
   const toggleMenu = (menuName) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
@@ -206,18 +237,21 @@ const Showcase = () => {
         </div>
       </div>
 
-      <Canvas 
-        shadows 
-        camera={{ position: [-4, 1, 5], fov: 50 }} 
-        className="w-full h-full"
-      >
+      <Canvas shadows camera={{ position: [-4, 1, 5], fov: 50 }}>
         <Environment preset="sunset" />
         <Stage environment={null} intensity={0.5}>
           <group position={[6, 0, 0]}>
-            <Model color={selectedColor} rimColor={selectedRimColor} glassColor={selectedGlassColor} />
+            <Model 
+              color={selectedColor} 
+              rimColor={selectedRimColor} 
+              glassColor={selectedGlassColor} 
+            />
           </group>
         </Stage>
-        <OrbitControls enableZoom={false} />
+        <CameraController 
+          position={cameraPositions[openMenu] || cameraPositions.body}
+          enabled={!!openMenu}
+        />
       </Canvas>
     </div>
   );
