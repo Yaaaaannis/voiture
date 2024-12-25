@@ -1,8 +1,10 @@
-import { Canvas, useThree } from '@react-three/fiber';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { Model } from '../3D/Car';
-import { OrbitControls, Environment, Stage } from '@react-three/drei';
-import { useState, useRef, useEffect } from 'react';
+import { OrbitControls, Environment, Stage, Points, PointMaterial } from '@react-three/drei';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { HexColorPicker } from 'react-colorful';
+import * as THREE from 'three';
+import * as random from 'maath/random';
 
 const colors = [
   { name: 'Rouge', value: '#FF0000' },
@@ -55,6 +57,37 @@ const CameraController = ({ position, enabled }) => {
   );
 };
 
+const ParticleField = () => {
+  const ref = useRef();
+  
+  // Génération des points avec maath
+  const points = useMemo(() => {
+    return random.inSphere(new Float32Array(5000), { radius: 15 });
+  }, []);
+
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x -= delta / 10;
+      ref.current.rotation.y -= delta / 15;
+    }
+  });
+
+  return (
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={points} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
+          color="#FFD700"
+          size={0.05}
+          sizeAttenuation={true}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
+    </group>
+  );
+};
+
 const Showcase = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [selectedColor, setSelectedColor] = useState(colors[0].value);
@@ -78,25 +111,26 @@ const Showcase = () => {
   };
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full bg-black">
       <div className="absolute right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6">
         {/* Menu Carrosserie */}
         <div className="w-64">
           <button
             onClick={() => toggleMenu('body')}
-            className="w-full p-4 rounded-lg bg-black/80 backdrop-blur-md 
-                     hover:bg-black/90 transition-all duration-300
-                     border-b border-white/10"
+            className="w-full p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                     hover:bg-zinc-800/90 transition-all duration-300
+                     border-b border-zinc-700/50"
           >
-            <h3 className="text-white/60 text-sm uppercase tracking-wider font-light mb-1">
+            <h3 className="text-zinc-400 text-sm uppercase tracking-wider font-light mb-1">
               Carrosserie
             </h3>
-            <p className="text-white text-xl font-light">
+            <p className="text-zinc-200 text-xl font-light">
               Personnalisation
             </p>
           </button>
           {openMenu === 'body' && (
-            <div className="mt-3 p-4 rounded-lg bg-black/80 backdrop-blur-md border border-white/10">
+            <div className="mt-3 p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                          border border-zinc-700/50">
               {showColorPicker && (
                 <div className="mb-4 p-3 bg-black/40 rounded-lg">
                   <HexColorPicker color={selectedColor} onChange={setSelectedColor} />
@@ -136,19 +170,20 @@ const Showcase = () => {
         <div className="w-64">
           <button
             onClick={() => toggleMenu('rims')}
-            className="w-full p-4 rounded-lg bg-black/80 backdrop-blur-md 
-                     hover:bg-black/90 transition-all duration-300
-                     border-b border-white/10"
+            className="w-full p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                     hover:bg-zinc-800/90 transition-all duration-300
+                     border-b border-zinc-700/50"
           >
-            <h3 className="text-white/60 text-sm uppercase tracking-wider font-light mb-1">
+            <h3 className="text-zinc-400 text-sm uppercase tracking-wider font-light mb-1">
               Jantes
             </h3>
-            <p className="text-white text-xl font-light">
+            <p className="text-zinc-200 text-xl font-light">
               Finition
             </p>
           </button>
           {openMenu === 'rims' && (
-            <div className="mt-3 p-4 rounded-lg bg-black/80 backdrop-blur-md border border-white/10">
+            <div className="mt-3 p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                          border border-zinc-700/50">
               {showRimColorPicker && (
                 <div className="mb-4 p-3 bg-black/40 rounded-lg">
                   <HexColorPicker color={selectedRimColor} onChange={setSelectedRimColor} />
@@ -188,19 +223,20 @@ const Showcase = () => {
         <div className="w-64">
           <button
             onClick={() => toggleMenu('glass')}
-            className="w-full p-4 rounded-lg bg-black/80 backdrop-blur-md 
-                     hover:bg-black/90 transition-all duration-300
-                     border-b border-white/10"
+            className="w-full p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                     hover:bg-zinc-800/90 transition-all duration-300
+                     border-b border-zinc-700/50"
           >
-            <h3 className="text-white/60 text-sm uppercase tracking-wider font-light mb-1">
+            <h3 className="text-zinc-400 text-sm uppercase tracking-wider font-light mb-1">
               Vitres
             </h3>
-            <p className="text-white text-xl font-light">
+            <p className="text-zinc-200 text-xl font-light">
               Teinte
             </p>
           </button>
           {openMenu === 'glass' && (
-            <div className="mt-3 p-4 rounded-lg bg-black/80 backdrop-blur-md border border-white/10">
+            <div className="mt-3 p-4 rounded-lg bg-zinc-900/90 backdrop-blur-md 
+                          border border-zinc-700/50">
               {showGlassColorPicker && (
                 <div className="mb-4 p-3 bg-black/40 rounded-lg">
                   <HexColorPicker color={selectedGlassColor || '#FFFFFF'} onChange={setSelectedGlassColor} />
@@ -238,8 +274,16 @@ const Showcase = () => {
       </div>
 
       <Canvas shadows camera={{ position: [-4, 1, 5], fov: 50 }}>
-        <Environment preset="sunset" />
-        <Stage environment={null} intensity={0.5}>
+        <color attach="background" args={['#000000']} />
+        <fog attach="fog" args={['#000000', 5, 30]} />
+        <ParticleField />
+        <Environment preset="night" />
+        <Stage 
+          environment={null} 
+          intensity={0.7}
+          shadows={false}
+          adjustCamera={false}
+        >
           <group position={[6, 0, 0]}>
             <Model 
               color={selectedColor} 
