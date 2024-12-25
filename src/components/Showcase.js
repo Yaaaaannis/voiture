@@ -1,6 +1,6 @@
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { Model } from '../3D/Car';
-import { OrbitControls, Environment, Stage, Points, PointMaterial } from '@react-three/drei';
+import { OrbitControls, Environment, Stage, Points, PointMaterial, Plane, MeshReflectorMaterial } from '@react-three/drei';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import * as THREE from 'three';
@@ -28,7 +28,7 @@ const rimColors = [
 const glassColors = [
   { name: 'Transparent', value: '#FFFFFF' },
   { name: 'Fumé', value: '#1A1A1A' },
-  { name: 'Bleuté', value: '#A3D4FF' },
+  { name: 'Bleut', value: '#A3D4FF' },
   { name: 'Bronze', value: '#CD7F32' },
 ];
 
@@ -85,6 +85,30 @@ const ParticleField = () => {
         />
       </Points>
     </group>
+  );
+};
+
+const Floor = () => {
+  return (
+    <Plane
+      args={[100, 100]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, -0.6, 0]}
+    >
+      <MeshReflectorMaterial
+        blur={[300, 100]}
+        resolution={2048}
+        mixBlur={0.4}
+        mixStrength={100}
+        roughness={0.3}
+        depthScale={1.2}
+        minDepthThreshold={0.4}
+        maxDepthThreshold={1.4}
+        color="#151515"
+        metalness={1}
+        mirror={1}
+      />
+    </Plane>
   );
 };
 
@@ -274,8 +298,8 @@ const Showcase = () => {
       </div>
 
       <Canvas shadows camera={{ position: [-4, 1, 5], fov: 50 }}>
-      <color attach="background" args={['#1E1710']} />
-      <fog attach="fog" args={['#1E1710', 5, 30]} />
+        <color attach="background" args={['#1E1710']} />
+        <fog attach="fog" args={['#1E1710', 5, 30]} />
         <ParticleField />
         <Environment preset="night" />
         <Stage 
@@ -292,6 +316,7 @@ const Showcase = () => {
             />
           </group>
         </Stage>
+        <Floor />
         <CameraController 
           position={cameraPositions[openMenu] || cameraPositions.body}
           enabled={!!openMenu}
