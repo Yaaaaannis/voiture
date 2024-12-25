@@ -77,7 +77,7 @@ const ParticleField = () => {
       <Points ref={ref} positions={points} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
-          color="#FFD700"
+          color="#FFBF00"
           size={0.05}
           sizeAttenuation={true}
           depthWrite={false}
@@ -274,13 +274,13 @@ const Showcase = () => {
       </div>
 
       <Canvas shadows camera={{ position: [-4, 1, 5], fov: 50 }}>
-        <color attach="background" args={['#000000']} />
-        <fog attach="fog" args={['#000000', 5, 30]} />
+      <color attach="background" args={['#1E1710']} />
+      <fog attach="fog" args={['#1E1710', 5, 30]} />
         <ParticleField />
         <Environment preset="night" />
         <Stage 
           environment={null} 
-          intensity={0.7}
+          intensity={0.9}
           shadows={false}
           adjustCamera={false}
         >
