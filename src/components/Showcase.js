@@ -5,6 +5,8 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import * as THREE from 'three';
 import * as random from 'maath/random';
+import { useSpring } from '@react-spring/three';
+import { animated } from '@react-spring/three';
 
 const colors = [
   { name: 'Rouge', value: '#FF0000' },
@@ -36,13 +38,29 @@ const CameraController = ({ position, enabled }) => {
   const { camera } = useThree();
   const controlsRef = useRef();
 
-  useEffect(() => {
-    if (enabled && controlsRef.current) {
-      camera.position.set(...position);
-      controlsRef.current.target.set(0, 0, 0);
-      controlsRef.current.update();
+  const { cameraPosition } = useSpring({
+    cameraPosition: enabled ? position : [-4, 1, 5],
+    config: {
+      mass: 1,
+      tension: 170,
+      friction: 26,
+      precision: 0.01,
     }
-  }, [position, camera, enabled]);
+  });
+
+  useEffect(() => {
+    if (controlsRef.current) {
+      controlsRef.current.target.set(0, 0, 0);
+    }
+  }, []);
+
+  useFrame(() => {
+    if (enabled) {
+      const [x, y, z] = cameraPosition.get();
+      camera.position.set(x, y, z);
+      controlsRef.current?.update();
+    }
+  });
 
   return (
     <OrbitControls 
@@ -147,8 +165,17 @@ const Showcase = () => {
   const cameraPositions = {
     body: [-3, 1, 4],     // Vue générale
     rims: [-2, 0, 2],   // Vue rapprochée des roues
-    glass: [2, 0.5, 0],    // Vue surélevée pour les vitres
+    glass: [1, 0.5, 4],    // Vue surélevée pour les vitres
   };
+
+  const { rotation } = useSpring({
+    rotation: [0, openMenu ? Math.PI / 2 : 0, 0],
+    config: {
+      mass: 1,
+      tension: 170,
+      friction: 26,
+    }
+  });
 
   const toggleMenu = (menuName) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
@@ -346,18 +373,18 @@ const Showcase = () => {
           shadows={false}
           adjustCamera={false}
         >
-          <group position={[6, 0, 0]}>
+          <animated.group position={[6, 0, 0]} rotation={rotation}>
             <Model 
               color={selectedColor} 
               rimColor={selectedRimColor} 
               glassColor={selectedGlassColor} 
             />
-          </group>
+          </animated.group>
         </Stage>
         <Floor />
         <CameraController 
           position={cameraPositions[openMenu] || cameraPositions.body}
-          enabled={!!openMenu}
+          enabled={true}
         />
         <Screenshot />
       </Canvas>
