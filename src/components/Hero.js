@@ -1,7 +1,3 @@
-import { useEffect, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Model } from '../3D/Car';
-import { Environment, Stage } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'framer-motion';
@@ -11,7 +7,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = ({ scrollToConfigurator }) => {
   return (
     <div className="relative h-full w-full">
-      {/* Vidéo d'arrière-plan */}
       <video
         autoPlay
         loop
@@ -21,7 +16,6 @@ const Hero = ({ scrollToConfigurator }) => {
         <source src="./showcase.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent">
         <div className="h-full flex flex-col justify-center px-12">
           <motion.div

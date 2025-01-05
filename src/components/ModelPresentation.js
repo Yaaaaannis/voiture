@@ -77,16 +77,14 @@ const ModelPresentation = () => {
 
   return (
     <div ref={ref} className="min-h-screen w-full bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
-      {/* Canvas 3D */}
       <div className="absolute inset-0">
         <Canvas shadows camera={{ position: [-3, 0.5, 3], fov: 50 }}>
           <Scene inView={inView} targetCameraIndex={activeCameraIndex} />
         </Canvas>
       </div>
 
-      {/* Contenu */}
+  
       <div className="relative z-10 h-full min-h-screen flex flex-col justify-between p-12">
-        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -102,8 +100,7 @@ const ModelPresentation = () => {
             L'expression ultime du luxe automobile.
           </p>
         </motion.div>
-
-        {/* Specs */}
+        
         <div className="w-full max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {specs.map((spec, index) => (

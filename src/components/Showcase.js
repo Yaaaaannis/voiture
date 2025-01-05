@@ -187,7 +187,6 @@ const Showcase = () => {
   return (
     <div className="relative h-full w-full bg-black">
       <div className="absolute right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6">
-        {/* Menu Carrosserie */}
         <div className="w-64">
           <button
             onClick={() => toggleMenu('body')}
@@ -240,7 +239,6 @@ const Showcase = () => {
           )}
         </div>
 
-        {/* Menu Jantes */}
         <div className="w-64">
           <button
             onClick={() => toggleMenu('rims')}
@@ -293,7 +291,6 @@ const Showcase = () => {
           )}
         </div>
 
-        {/* Menu Vitres */}
         <div className="w-64">
           <button
             onClick={() => toggleMenu('glass')}

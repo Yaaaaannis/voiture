@@ -78,7 +78,6 @@ const PerformanceSection = () => {
 
   return (
     <div ref={ref} className="min-h-screen w-full bg-black relative py-24 ">
-      {/* En-tête */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -94,7 +93,6 @@ const PerformanceSection = () => {
         </p>
       </motion.div>
 
-      {/* Grille des spécifications */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
         {specs.map((section, index) => (
           <motion.div

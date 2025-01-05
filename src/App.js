@@ -17,12 +17,10 @@ function App() {
 
   return (
     <div className="w-full h-[300vh]">
-      {/* Section Hero */}
       <section className="h-screen">
         <Hero scrollToConfigurator={scrollToConfigurator} />
       </section>
 
-      {/* Section Présentation */}
       <section className="h-screen">
         <ModelPresentation />
       </section>
@@ -30,7 +28,6 @@ function App() {
         <PerformanceSection />
       </section>
 
-      {/* Section Showcase */}
       <section className="h-screen">
         <Suspense fallback={
           <div className="w-full h-full flex items-center justify-center bg-black text-white">
