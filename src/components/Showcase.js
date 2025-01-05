@@ -122,7 +122,7 @@ const Screenshot = ({ onScreenshot }) => {
     // Créer un lien pour le téléchargement
     const link = document.createElement('a');
     link.href = screenshot;
-    link.download = 'ma-voiture-3d.png';
+    link.download = 'lotus-config.png';
     link.click();
   };
 
